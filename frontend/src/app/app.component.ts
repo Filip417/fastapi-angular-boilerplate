@@ -14,8 +14,15 @@ export class AppComponent implements OnInit {
   helloMessage = 'Loading backend...';
 
   ngOnInit(): void {
-    const url = `${environment.apiUrl}/api/v1/hello`;
-    console.log('API URL:', environment.apiUrl);
+    const apiUrl = environment.apiUrl?.replace(/\/$/, '') ?? '';
+    console.log('API URL:', apiUrl);
+    if (!apiUrl) {
+      console.error('API_URL is not set');
+      this.helloMessage = 'API_URL is not set';
+      return;
+    }
+
+    const url = `${apiUrl}/api/v1/hello`;
     console.log('GET', url);
     fetch(url)
       .then((response) => {
