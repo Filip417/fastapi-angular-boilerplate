@@ -14,17 +14,23 @@ export class AppComponent implements OnInit {
   helloMessage = 'Loading backend...';
 
   ngOnInit(): void {
-    fetch(`${environment.apiUrl}/v1/hello`)
+    const url = `${environment.apiUrl}/api/v1/hello`;
+    console.log('API URL:', environment.apiUrl);
+    console.log('GET', url);
+    fetch(url)
       .then((response) => {
+        console.log('Response status:', response.status);
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
         }
         return response.json() as Promise<{ message?: string }>;
       })
       .then((data) => {
+        console.log('Response body:', data);
         this.helloMessage = data.message ?? 'Hello from backend';
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error('Backend request failed:', error);
         this.helloMessage = 'Backend not reachable';
       });
   }
