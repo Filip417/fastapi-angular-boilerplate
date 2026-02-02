@@ -1,32 +1,21 @@
-import os
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from api.hello import router as hello_router
+from api.meta import router as meta_router
+from config import get_settings
+
 app = FastAPI()
 
-cors_origins_env = os.getenv("CORS_ORIGINS", "")
-cors_origins = [origin.strip() for origin in cors_origins_env.split(",") if origin.strip()]
+settings = get_settings()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=cors_origins,
+    allow_origins=settings.cors_origins,
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
-@app.get("/")
-def root():
-    return {"status": "ok"}
-
-
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
-
-@app.get("/api/v1/hello")
-def hello():
-    return {"message": "Hello from FastAPI backend"}
+app.include_router(meta_router)
+app.include_router(hello_router)
