@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: process.env["API_KEY"]
+  apiUrl: (window as any).__env?.API_URL
 };
