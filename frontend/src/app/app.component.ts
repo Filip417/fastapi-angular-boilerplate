@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -8,6 +8,23 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'angular-boilerplate';
+  helloMessage = 'Loading backend...';
+
+  ngOnInit(): void {
+    fetch('/api/v1/hello')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json() as Promise<{ message?: string }>;
+      })
+      .then((data) => {
+        this.helloMessage = data.message ?? 'Hello from backend';
+      })
+      .catch(() => {
+        this.helloMessage = 'Backend not reachable';
+      });
+  }
 }
