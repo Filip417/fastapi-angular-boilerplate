@@ -15,14 +15,14 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     const apiUrl = environment.apiUrl?.replace(/\/$/, '') ?? '';
+    const isHttpsPage = window.location.protocol === 'https:';
+    const isInsecureApi = apiUrl.startsWith('http://');
+    const useSameOriginProxy = !apiUrl || (isHttpsPage && isInsecureApi);
+    const baseUrl = useSameOriginProxy ? '' : apiUrl;
     console.log('API URL:', apiUrl);
-    if (!apiUrl) {
-      console.error('API_URL is not set');
-      this.helloMessage = 'API_URL is not set';
-      return;
-    }
+    console.log('Using same-origin proxy:', useSameOriginProxy);
 
-    const url = `${apiUrl}/api/v1/hello`;
+    const url = `${baseUrl}/api/v1/hello`;
     console.log('GET', url);
     fetch(url)
       .then((response) => {
