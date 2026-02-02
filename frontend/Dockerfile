@@ -13,5 +13,5 @@ FROM nginx:1.25-alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf.template
 COPY --from=build /app/dist/angular-boilerplate /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 4200
 CMD ["/bin/sh", "-c", "envsubst '$$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
