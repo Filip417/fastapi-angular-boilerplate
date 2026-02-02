@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   helloMessage = 'Loading backend...';
 
   ngOnInit(): void {
-    fetch(`${environment.apiUrl}/api/v1/hello`)
+    fetch(`${environment.apiUrl}/v1/hello`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);

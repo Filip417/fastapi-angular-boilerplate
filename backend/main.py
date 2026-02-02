@@ -22,6 +22,6 @@ def health():
     return {"status": "ok"}
 
 
-@app.get("api/v1/hello")
+@app.get("/api/v1/hello")
 def hello():
     return {"message": "Hello from FastAPI backend"}
