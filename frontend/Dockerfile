@@ -10,6 +10,7 @@ RUN npm run build
 
 # Runtime stage
 FROM nginx:1.25-alpine
+RUN apk add --no-cache gettext
 COPY nginx.conf /etc/nginx/conf.d/default.conf.template
 COPY --from=build /app/dist/angular-boilerplate/browser /usr/share/nginx/html
 
